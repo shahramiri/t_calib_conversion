@@ -139,8 +139,7 @@ PixelScale= 0.2109;
 CntPoint=[-IP.Xoffset, -IP.Yoffset, -IP.PrincipalDist];
 
 for f=1:size(Pnt_UV,1)
-%     Pnt_XYZ=IP.CentrePoint + (Pnt_UV(f,1)+d_UV(1))*PS*Vx + (Pnt_UV(f,2)+d_UV(2))*PS*Vy ;
-    Pnt_XYZ=IP.CentrePoint + (Pnt_UV(f,1)+d_UV(1))*PS*Vx + (-Pnt_UV(f,2)-d_UV(2))*PS*Vy ;
+    % Pnt_XYZ=IP.CentrePoint + (Pnt_UV(f,1)+d_UV(1))*PS*Vx + (-Pnt_UV(f,2)-d_UV(2))*PS*Vy ;
     Pnt_X = -ImgPlane.Xoffset + (Pnt_UV(f,1)+d_UV(1))*PS;
     Pnt_Y = -ImgPlane.Yoffset + (Pnt_UV(f,2)+d_UV(2))*PS;
     Pnt_Z = -ImgPlane.PrincipalDist;
@@ -148,9 +147,7 @@ for f=1:size(Pnt_UV,1)
     plot3(Pnt_XYZ(1),Pnt_XYZ(2),Pnt_XYZ(3),cols{f});
 end
 
-Pnt_X = -ImgPlane.Xoffset + (Pnt_UV(f,1)+d_UV(1))*PS;
-Pnt_Y = -ImgPlane.Yoffset - (Pnt_UV(f,2)-d_UV(2))*PS;
-Pnt_Z = -ImgPlane.PrincipalDist;
+
 
 
 %figure;imshow(flipdim(IP.Image,1));
