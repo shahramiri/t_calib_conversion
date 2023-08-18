@@ -1,0 +1,21 @@
+11-Dec-2021 17:44:34
+====================================================================
+                Gantry Arc Fusion Results
+====================================================================
+ Fused Arc - Radial errors:
+ Total RMS Error: 29.059 mm
+ Mean Error: 26.346 mm , Stdev Error: 13.108 mm
+ Max Error:  35.201 mm ,   Min Error: 5.101 mm
+--------------------------------------------------------------------
+ Individual BB recons errors:
+ Mean Error: 4.654 mm , Stdev Error: 1.854 mm
+ Max Error:  6.848 mm ,   Min Error: 1.918 mm
+====================================================================
+ Arc 1 - indivisual BB :
+ Mean Error: 0.174 mm , Stdev Error: 0.097 mm
+ Max Error:  0.353 mm ,   Min Error: 0.031 mm
+--------------------------------------------------------------------
+ Arc 2 - indivisual BB :
+ Mean Error: 0.278 mm , Stdev Error: 0.176 mm
+ Max Error:  0.569 mm ,   Min Error: 0.061 mm
+====================================================================

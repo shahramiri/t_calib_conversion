@@ -1,0 +1,43 @@
+TLoadCalibration
+
+
+Data = 
+
+            Cmd: 'TLoadCalibration'
+          CmdID: '54'
+        RegFile: 'M01_16-Dec-2020+13%3A39%3A33.mrkmat'
+    CalibFolder: 'CHHM_Siemens_Dec17_2020'
+	
+	
+	
+<Data class="struct">
+	<Cmd>TLoadCalibration</Cmd>
+	<CmdID>54</CmdID>
+	<RegFile>M01#95;16#45;Dec#45;2020#43;13#37;3A39#37;3A33#46;mrkmat</RegFile>
+	<CalibFolder>CHHM#95;Siemens#95;Dec17#95;2020</CalibFolder>
+</Data>
+
+
+output_args = 
+
+               Success: 1
+         HasAttachment: 1
+        AttachmentType: 'TrackingRomFile'
+    AttachmentFileName: 'tpeec9c873_aa8c_4eae_aed0_d80c1b5f0462'
+              ByteSize: 752
+    MarkersLocalCoords: [4x3 double]
+
+
+<Response class="struct">
+	<CmdID>54</CmdID>
+	<Output class="struct">
+		<Success class="double">1</Success>
+		<HasAttachment class="double">1</HasAttachment>
+		<AttachmentType>TrackingRomFile</AttachmentType>
+		<AttachmentFileName>C#58;#92;Codes#92;Matlab#92;TCarm#95;Server#92;ReceivedAttachments#92;tpf5fdfff3#95;31ae#95;40bf#95;be90#95;20a4d9268312#46;lft</AttachmentFileName>
+		<ByteSize class="double">752</ByteSize>
+		<MarkersLocalCoords class="double" size="4 3">-185.1 -376.21 0 -251.14 41.3 0 0 -68.67 0 0 0 -0.32</MarkersLocalCoords>
+	</Output>
+	<Success class="double">1</Success>
+</Response>
+
