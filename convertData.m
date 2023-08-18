@@ -1,14 +1,3 @@
-% CalibFolder = 'C:\Codes\Matlab\t_CalibrationConversion\Calibration\FPD_FrameCaptureData'
-% % load([CalibFolder , '\TorusCGantryCalib.ccal'],'LookupTable','-mat');
-% load([CalibFolder , '\TorusCGantryCalib.ccal'],'-mat');
-% jsonFileName='calibdata.json';
-% CalibData=[];
-% CalibData.Name=Name;
-% CalibData.Model=Model;
-% CalibData.LookupTable=LookupTable;
-% ResponseStr=simplify_mbml(mat2xml(CalibData,'Response'));
-% % ResponseStr=mat2xml(CalibData,'Response');
-
 % =========================================================================
 % Set up the Data for loading calibration and creating an ImagePlane
 % =========================================================================
@@ -67,7 +56,7 @@ else
     [ImgPlane,~,~]=handles.W1.collectPosition(FG_thefile);
 end
 
-figure;ImgPlane.imshow3d(1,1); axis equal;
+% figure;ImgPlane.imshow3d(1,1); axis equal;
 
 
 % =========================================================================
@@ -103,6 +92,7 @@ IP.Image=ImgPlane.Image;
 Pnt_UV=[0,0; 200,400; 512,512; 512,900];
 cols={'r+','g+','b+','m+','y+'};
 figure;imshow(IP.Image); hold on;
+
 for f=1:size(Pnt_UV,1)
     plot(Pnt_UV(f,1),Pnt_UV(f,2),cols{f});
 end
@@ -138,16 +128,63 @@ PixelScale= 0.2109;
 
 CntPoint=[-IP.Xoffset, -IP.Yoffset, -IP.PrincipalDist];
 
+
 for f=1:size(Pnt_UV,1)
     % Pnt_XYZ=IP.CentrePoint + (Pnt_UV(f,1)+d_UV(1))*PS*Vx + (-Pnt_UV(f,2)-d_UV(2))*PS*Vy ;
     Pnt_X = -ImgPlane.Xoffset + (Pnt_UV(f,1)+d_UV(1))*PS;
     Pnt_Y = -ImgPlane.Yoffset + (Pnt_UV(f,2)+d_UV(2))*PS;
     Pnt_Z = -ImgPlane.PrincipalDist;
     Pnt_XYZ=[Pnt_X, Pnt_Y, Pnt_Z];
-    plot3(Pnt_XYZ(1),Pnt_XYZ(2),Pnt_XYZ(3),cols{f});
+    plot3(Pnt_XYZ(1),Pnt_XYZ(2),Pnt_XYZ(3),cols{f});    
 end
 
 
-
-
+F=ImgPlane.PrincipalDist;
+Ox=ImgPlane.Xoffset + 512*IP.PixelScale;
+Oy=ImgPlane.Yoffset + 512*IP.PixelScale;
+Mint=[F,0,Ox,0; 0,F,Oy,0; 0,0,1,0];
 %figure;imshow(flipdim(IP.Image,1));
+
+% Calculate the Extrinsic Matrix
+Vz=[-ImgPlane.ImageNormal];
+Vy=-ImgPlane.ImageUp;
+Vx=cross(Vy,Vz);
+Vy=cross(Vz,Vx);
+Vx=Vx/norm(Vx);
+Vy=Vy/norm(Vy);
+Vz=Vz/norm(Vz);
+
+Src=ImgPlane.SourcePosition;
+Mext=[Vx',0; Vy',0; Vz',0; Src',1]';
+
+PrjMat=Mint * inv(Mext);
+
+% Construct sample points:
+Pnts_3D=zeros(size(Pnt_UV,1),3);
+Pnts_2D=zeros(size(Pnt_UV,1),2);
+
+ty=ImgPlane.ImageUp;
+tz=ImgPlane.ImageNormal;
+tx=cross(ty,tz);
+ty=cross(tz,tx);
+tx=tx/norm(tx);
+ty=ty/norm(ty);
+tz=tz/norm(tz);
+
+figure; ImgPlane.imshow3d(1,1); hold on; axis equal;
+for f=1:size(Pnt_UV,1)
+    Pnts_3D(f,:)= ImgPlane.CentrePoint + tx*(Pnt_UV(f,1)-512)*PS + ty*(Pnt_UV(f,2)-512)*PS;
+    plot3(Pnts_3D(f,1),Pnts_3D(f,2),Pnts_3D(f,3),cols{f});
+end
+
+% Calculate the projection from the 3D points:
+figure; imshow(ImgPlane.Image); hold on;
+for f=1:size(Pnt_UV,1)
+    Prj = PrjMat * [Pnts_3D(f,:),1]';
+    Prj=Prj/Prj(3);
+    Pnts_2D(f,:) = Prj(1:2)';
+    plot(Pnts_2D(f,1),Pnts_2D(f,2),cols{f});
+end
+
+Pnts_2D
+Pnt_UV
