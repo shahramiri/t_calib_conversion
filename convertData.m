@@ -139,14 +139,13 @@ for f=1:size(Pnt_UV,1)
 end
 
 
-F=ImgPlane.PrincipalDist;
-Ox=ImgPlane.Xoffset + 512*IP.PixelScale;
-Oy=ImgPlane.Yoffset + 512*IP.PixelScale;
-Mint=[F,0,Ox,0; 0,F,Oy,0; 0,0,1,0];
-%figure;imshow(flipdim(IP.Image,1));
+F=ImgPlane.PrincipalDist/PS;
+Ox=(ImgPlane.Xoffset + 512*IP.PixelScale)/PS;
+Oy=(ImgPlane.Yoffset + 512*IP.PixelScale)/PS;
+Mint=[F, 0, Ox, 0; 0, -F, Oy, 0; 0, 0, 1, 0];
 
 % Calculate the Extrinsic Matrix
-Vz=[-ImgPlane.ImageNormal];
+Vz=-ImgPlane.ImageNormal;
 Vy=-ImgPlane.ImageUp;
 Vx=cross(Vy,Vz);
 Vy=cross(Vz,Vx);
@@ -180,7 +179,7 @@ end
 % Calculate the projection from the 3D points:
 figure; imshow(ImgPlane.Image); hold on;
 for f=1:size(Pnt_UV,1)
-    Prj = PrjMat * [Pnts_3D(f,:),1]';
+    Prj = (PrjMat * [Pnts_3D(f,:),1]');
     Prj=Prj/Prj(3);
     Pnts_2D(f,:) = Prj(1:2)';
     plot(Pnts_2D(f,1),Pnts_2D(f,2),cols{f});
